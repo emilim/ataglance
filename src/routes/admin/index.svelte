@@ -43,10 +43,10 @@
 </svelte:head>
 
 <div class="content text-primary-content">
-	<div class="header">
+	<div class="header text-accent-content">
 		<h2 class="text-xl">My Notes</h2>
 	</div>
-	<div class="notes">
+	<div class="flex w-full flex-wrap mt-4 mb-8 content-center">
 		{#each notes as note}
 			<NoteCard
 				title={note.title}

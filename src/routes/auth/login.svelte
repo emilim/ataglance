@@ -65,6 +65,7 @@
 	<div class="headerr">
 		<h4>Login</h4>
 	</div>
+
 	<div class="signin-form">
 		{#if errors}
 			<div class="notification-block">
@@ -73,6 +74,9 @@
 		{/if}
 
 		<SignIn on:login={signIn} />
+		<p class="text-center text-xs">
+			You need to manually go back to the home after sending the form
+		</p>
 		or
 		<button class="btn btn-secondary" on:click={googleLogin}>Sign In with google</button>
 		<div>

@@ -48,6 +48,11 @@
 			>
 			<p>Copyright © 2022 - All right reserved - Manzotti</p>
 		</div>
+		<p class="text-center mx-1">
+			Only for fun app. It's in beta so doesn't have a lot of features. I'm working on it. Don't
+			aspect to have privacy or security. I'm not responsible for any data loss. ONLY FOR FUN. NOT
+			FOR WORK PURPOSES.
+		</p>
 		<div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
 			<a href="https://github.com/emilim/ataglance-public" target="_blank" alt="Github"
 				><svg

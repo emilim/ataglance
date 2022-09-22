@@ -297,18 +297,29 @@
 </script>
 
 <div class="headerr text-accent-content">
-	<h1 data-placeholder="Your title" contenteditable="true" id="title" class="text-xl mx-2 my-2">
+	<h1
+		data-placeholder="Your title"
+		contenteditable="true"
+		id="title"
+		class="text-xl bg-base-300 m-2 text-center rounded-xl"
+	>
 		{title}
 	</h1>
-	<p data-placeholder="Your summary" contenteditable="true" id="summary" class="text-sm mx-2 my-2">
+	<p
+		data-placeholder="Your summary"
+		contenteditable="true"
+		id="summary"
+		class="text-sm bg-base-300 m-2 text-center rounded-xl"
+	>
 		{summary}
 	</p>
-	<Form>
-		<Button on:click={dispatchBlog} class="text-accent-content bg-accent mx-2 my-2">Submit</Button>
-	</Form>
 </div>
 
 {@html description}
+
+<Form>
+	<Button on:click={dispatchBlog} class="btn-primary m-2">Submit</Button>
+</Form>
 
 <ContextMenu on:open={(e) => setGlobalItem(e)} id="menu">
 	<ContextMenuOption
