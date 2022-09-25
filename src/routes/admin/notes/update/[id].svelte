@@ -36,11 +36,11 @@
 	<title>Update note</title>
 </svelte:head>
 <br />
-<div style="height: calc(100vh - 200px);">
-	<NoteForm
-		on:sendNoteDetails={updateNoteDetails}
-		title={note.title}
-		summary={note.summary}
-		description={note.description}
-	/>
-</div>
+
+<NoteForm
+	on:sendNoteDetails={updateNoteDetails}
+	title={note.title}
+	summary={note.summary}
+	description={note.description}
+	messages={note.messages}
+/>

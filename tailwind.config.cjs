@@ -11,10 +11,12 @@ module.exports = {
         light: {
           ...require("daisyui/src/colors/themes")["[data-theme=light]"],
           "pure": "black",
+          "--back": "#e5e5e5",
         },
         dark: {
           ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
           "pure": "white",
+          "--back": "#1f242d",
         },
 
       }

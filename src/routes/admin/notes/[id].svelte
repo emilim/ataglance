@@ -36,14 +36,14 @@
 			<h2>note does not exist or has been deleted</h2>
 		</div>
 	{:else}
-		<div>
+		<!--<div>
 			<h2 contenteditable="true">
 				{note.title}
 			</h2>
-			<p contenteditable="true">{note.summary}</p>
-			<p class="description">{note.description}</p>
+			<p contenteditable="true">{@html note.summary}</p>
+			<p class="description">{@html note.description}</p>
 		</div>
-		{@html note.description}
+		{@html note.description}-->
 	{/if}Î
 </div>
 

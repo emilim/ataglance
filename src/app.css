@@ -23,3 +23,10 @@ h1,
 p {
     font-family: "Rubik", sans-serif;
 }
+
+textarea {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    resize: none;
+}

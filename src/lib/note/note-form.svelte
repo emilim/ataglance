@@ -2,21 +2,35 @@
 	import { Form, Button } from 'carbon-components-svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { ContextMenu, ContextMenuDivider, ContextMenuOption } from 'carbon-components-svelte';
+	import swal from 'sweetalert';
+	//import swal from '@sweetalert/with-react'
 
 	const dispatcher = createEventDispatcher();
 
-	export let title, summary, description;
+	export let title, summary, description, messages;
 
 	function dispatchBlog() {
+		document.querySelectorAll('[id^="message"]').forEach((message) => {
+			message.parentElement.setAttribute('content', message.value);
+			console.log(message.parentElement);
+		});
 		title = document.getElementById('title').innerHTML;
 		summary = document.getElementById('summary').innerHTML;
 		description = document.getElementsByClassName('container')[0].outerHTML;
+		messages = Array.from(document.querySelectorAll('[id^="message"]')).map((message) => {
+			return {
+				content: message.value
+			};
+		});
+
+		//this.setAttribute('content', this.children[0].value);
 		dispatcher('sendNoteDetails', {
 			title,
 			summary,
-			description
+			description,
+			messages
 		});
-		(title = ''), (summary = ''), (description = '');
+		(title = ''), (summary = ''), (description = ''), (messages = '');
 	}
 
 	onMount(() => {
@@ -30,16 +44,21 @@
 				this.style.alignItems = 'center';
 				this.style.justifyContent = 'center';
 				this.style.flex = this.style.flex || '1';
-				this.innerHTML =
-					this.innerHTML == '' ? "<p contenteditable='true'>Your Note</p>" : this.innerHTML;
 				this.style.background = this.getAttribute('color') || getRandomColor();
-			}
-			handleClick(event) {
-				//event.target.innerHTML = 'lol';
+
+				if (!this.hasChildNodes()) {
+					var content = document.createElement('textarea');
+					content.setAttribute('id', 'message');
+					content.setAttribute('placeholder', 'Enter content');
+					content.style.background = this.style.background;
+					this.appendChild(content);
+				} else {
+					this.children[0].value = this.getAttribute('content');
+				}
 			}
 
 			static get observedAttributes() {
-				return ['color', 'flex', 'text'];
+				return ['color', 'flex', 'content'];
 			}
 		}
 		customElements.get('flex-element') || customElements.define('flex-element', FlexElement);
@@ -215,15 +234,19 @@
 	let ev, bar, wrapper, newItem;
 	function setGlobalItem(item) {
 		//ev = document.getElementById(item.detail.id);
-		ev = item.detail;
-		//bar = document.getElementsByTagName('flex-resizer')[0].cloneNode(true);
-		bar = document.createElement('flex-resizer');
-		wrapper =
-			ev.parentNode.getAttribute('class') != null ? ev.parentNode.getAttribute('class')[0] : '';
-		newItem = document.createElement('flex-element');
-		newItem.setAttribute('color', getRandomColor());
-		newItem.setAttribute('flex', '1');
-		newItem.setAttribute('text', "<p contenteditable='true'>Your Note</p>");
+		ev = item.detail.parentElement;
+		if (ev.nodeName == 'FLEX-ELEMENT') {
+			//bar = document.getElementsByTagName('flex-resizer')[0].cloneNode(true);
+			bar = document.createElement('flex-resizer');
+			wrapper =
+				ev.parentNode.getAttribute('class') != null ? ev.parentNode.getAttribute('class')[0] : '';
+			newItem = document.createElement('flex-element');
+			newItem.setAttribute('color', getRandomColor());
+			newItem.setAttribute('flex', '1');
+			newItem.setAttribute('content', '');
+		} else {
+			document.getElementById('menu').style.display = 'none';
+		}
 	}
 	function VerticalSplit() {
 		if (wrapper == null) {
@@ -238,7 +261,7 @@
 
 			newFlex.className = 'h';
 			var newEvTarget = ev.cloneNode(true);
-			newEvTarget.setAttribute('text', ev.cloneNode(true).innerHTML);
+			newEvTarget.setAttribute('content', ev.cloneNode(true).children[0].value);
 
 			newFlex.appendChild(newEvTarget);
 			newFlex.appendChild(bar);
@@ -261,7 +284,7 @@
 
 			newFlex.className = 'v';
 			var newEvTarget = ev.cloneNode(true);
-			newEvTarget.setAttribute('text', ev.cloneNode(true).innerHTML);
+			newEvTarget.setAttribute('content', ev.cloneNode(true).children[0].value);
 
 			newFlex.appendChild(newEvTarget);
 			newFlex.appendChild(bar);
@@ -270,6 +293,39 @@
 
 			ev.parentNode.replaceChild(newFlex, ev);
 		}
+	}
+	function CreateGroup() {
+		var newFlex = document.createElement('flex');
+		newFlex.className = 'h';
+		newFlex.style.flexGrow = '1';
+		newFlex.style.border = '10px solid black';
+		newFlex.style.borderRadius = '10px';
+		newFlex.appendChild(newItem.cloneNode(true));
+		ev.parentNode.replaceChild(newFlex, ev);
+	}
+	function Settings() {
+		var backgroundColor = document.createElement('input');
+		var textColor = document.createElement('input');
+		backgroundColor.setAttribute('type', 'color');
+		textColor.setAttribute('type', 'color');
+		backgroundColor.defaultValue = ev.style.backgroundColor;
+		textColor.defaultValue = ev.children[0].style.color;
+		//merge the two inputs into one
+		var colorPicker = document.createElement('div');
+		colorPicker.appendChild(backgroundColor);
+		colorPicker.appendChild(textColor);
+		swal({
+			text: 'back | text',
+			content: colorPicker,
+			//value: settings.value,
+			closeOnClickOutside: false
+		}).then((value) => {
+			ev.setAttribute('color', backgroundColor.value);
+			ev.style.backgroundColor = backgroundColor.value;
+			ev.children[0].style.backgroundColor = backgroundColor.value;
+
+			ev.children[0].style.color = textColor.value;
+		});
 	}
 	function Delete() {
 		var next = ev.nextSibling == null ? '' : ev.nextSibling.nodeName;
@@ -296,14 +352,14 @@
 	}
 </script>
 
-<div class="headerr text-accent-content">
+<div class="text-accent-content m-4">
 	<h1
 		data-placeholder="Your title"
 		contenteditable="true"
 		id="title"
 		class="text-xl bg-base-300 m-2 text-center rounded-xl"
 	>
-		{title}
+		{@html title}
 	</h1>
 	<p
 		data-placeholder="Your summary"
@@ -311,14 +367,16 @@
 		id="summary"
 		class="text-sm bg-base-300 m-2 text-center rounded-xl"
 	>
-		{summary}
+		{@html summary}
 	</p>
 </div>
-
-{@html description}
-
+<div style="height: 100vh;">
+	{@html description}
+</div>
 <Form>
-	<Button on:click={dispatchBlog} class="btn-primary m-2">Submit</Button>
+	<center>
+		<Button on:click={dispatchBlog} class="btn-primary m-4 text-center">Submit</Button>
+	</center>
 </Form>
 
 <ContextMenu on:open={(e) => setGlobalItem(e)} id="menu">
@@ -334,14 +392,13 @@
 		shortcutText="⌘H"
 		on:click={HorizontalSplit}
 	/>
+	<ContextMenuOption indented labelText="Create group" shortcutText="⌘G" on:click={CreateGroup} />
+	<ContextMenuOption indented labelText="Settings" shortcutText="⌘S" on:click={Settings} />
 	<ContextMenuDivider />
 	<ContextMenuOption indented kind="danger" labelText="Delete" on:click={Delete} />
 </ContextMenu>
 
 <style>
-	:global(.headerr) {
-		margin: 2em;
-	}
 	/*
 	:global(.container) {
 		position: relative;
@@ -357,6 +414,7 @@
 	}*/
 	:global(flex-element) {
 		border-radius: 10px;
+		padding: 10px;
 	}
 	:global(flex) {
 		display: flex;
@@ -380,7 +438,7 @@
 	:global(flex > flex-resizer) {
 		flex: 0 0 10px;
 		/* background: white; */
-		background-color: rgb(229, 229, 229);
+		background-color: var(--back);
 		background-repeat: no-repeat;
 		background-position: center;
 	}

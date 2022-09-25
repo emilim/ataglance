@@ -44,7 +44,8 @@
 
 <div class="content text-primary-content">
 	<div class="header text-accent-content">
-		<h2 class="text-xl">My Notes</h2>
+		<h1 class="text-xl mb-6">My Notes</h1>
+		<a href="/admin/create-note" class="btn btn-active btn-secondary">Create a new note</a>
 	</div>
 	<div class="flex w-full flex-wrap mt-4 mb-8 content-center">
 		{#each notes as note}
@@ -64,23 +65,13 @@
 </div>
 
 <style>
+	:global(.description textarea, .description flex-resizer) {
+		display: none;
+	}
 	.content {
 		min-height: 90vh;
 		padding: 1em;
 		margin: 0 auto;
 		max-width: 80%;
-	}
-
-	.header {
-		padding: 1em 2em;
-	}
-
-	.header h2 {
-		font-weight: 700;
-	}
-
-	.notes {
-		display: flex;
-		flex-wrap: wrap;
 	}
 </style>

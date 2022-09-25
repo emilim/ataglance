@@ -19,7 +19,7 @@
 	<title>At a Glance</title>
 </svelte:head>
 
-<div class="text-accent-content">
+<div class="content text-accent-content">
 	<h1 class="text-4xl font-normal leading-normal text-base-content text-center pt-6">
 		A new intuitive way to manage your life
 	</h1>
@@ -41,3 +41,12 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.content {
+		min-height: 90vh;
+		padding: 1em;
+		margin: 0 auto;
+		max-width: 80%;
+	}
+</style>

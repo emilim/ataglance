@@ -32,13 +32,8 @@
 </script>
 
 <div class="card bg-secondary">
-	<div class="title">
-		<h2>{title}</h2>
-	</div>
-	<div class="content">
-		<p>{summary}</p>
-		<!--<a href="/admin/notes/{id}">Read more</a>-->
-	</div>
+	<h1 class="text-xl m-1 font-bold">{@html title}</h1>
+	<p class="text-xs mb-2 font-thin">{@html summary}</p>
 	<div class="description disabled" style="height: 25vh;">
 		{@html description}
 	</div>
@@ -69,18 +64,6 @@
 
 	.card:hover {
 		box-shadow: 0 4px 7px #f1f2f2;
-	}
-
-	.card .content {
-		margin-bottom: 1em;
-	}
-
-	.card .content a {
-		margin-top: 10px;
-	}
-
-	.card a {
-		display: flex;
 	}
 
 	.button-set {
