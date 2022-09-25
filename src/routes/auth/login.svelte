@@ -78,7 +78,7 @@
 			You need to manually go back to the home after sending the form
 		</p>
 		or
-		<button class="btn btn-secondary" on:click={googleLogin}>Sign In with google</button>
+		<button class="btn btn-primary" on:click={googleLogin}>Sign In with google</button>
 		<div>
 			Don't have an account? <a href="/auth/register" class="link link-secondary">Sign up</a>
 		</div>

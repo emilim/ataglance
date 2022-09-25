@@ -303,13 +303,32 @@
 		newFlex.appendChild(newItem.cloneNode(true));
 		ev.parentNode.replaceChild(newFlex, ev);
 	}
+
+	function componentToHex(c) {
+		var hex = c.toString(16);
+		return hex.length == 1 ? '0' + hex : hex;
+	}
+
+	function rgbToHex(rgb) {
+		rgb = rgb.replace('rgb(', '');
+		rgb = rgb.replace(')', '');
+		rgb = rgb.split(',');
+		var r = parseInt(rgb[0]);
+		var g = parseInt(rgb[1]);
+		var b = parseInt(rgb[2]);
+		return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+	}
+
 	function Settings() {
+		let color = rgbToHex(ev.style.backgroundColor);
+		let color2 = rgbToHex(ev.children[0].style.color);
 		var backgroundColor = document.createElement('input');
 		var textColor = document.createElement('input');
 		backgroundColor.setAttribute('type', 'color');
 		textColor.setAttribute('type', 'color');
-		backgroundColor.defaultValue = ev.style.backgroundColor;
-		textColor.defaultValue = ev.children[0].style.color;
+		console.log(color);
+		backgroundColor.defaultValue = color;
+		textColor.defaultValue = color2;
 		//merge the two inputs into one
 		var colorPicker = document.createElement('div');
 		colorPicker.appendChild(backgroundColor);

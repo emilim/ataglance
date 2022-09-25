@@ -39,7 +39,7 @@
 			name="password"
 		/>
 		<div class="space" />
-		<button class="btn btn-outline btn-secondary" on:click={signup}>Sign Up</button>
+		<button class="btn btn-outline btn-primary" on:click={signup}>Sign Up</button>
 	</Form>
 </div>
 

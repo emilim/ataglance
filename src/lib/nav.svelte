@@ -1,9 +1,5 @@
 <script>
-	import { Link } from 'carbon-components-svelte';
 	import { getStores } from '$app/stores';
-	import { signOut } from 'firebase/auth';
-	import { auth } from '../firebase';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	let { session } = getStores();
 	import { themeChange } from 'theme-change';
@@ -11,10 +7,6 @@
 	onMount(() => {
 		themeChange(false);
 	});
-	async function logOut() {
-		await signOut(auth);
-		await goto('/');
-	}
 </script>
 
 <div class="navbar bg-base-300 text-accent-content">
@@ -66,7 +58,7 @@
 							<a href="/admin/create-note">Create a new note</a>
 						</li>
 						<li>
-							<button on:click={logOut} class="bg-error">Log out</button>
+							<a href="/admin/account">Account</a>
 						</li>
 					</ul>
 				</div>

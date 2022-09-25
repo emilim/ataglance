@@ -31,7 +31,7 @@
 			name="password"
 		/>
 		<div class="space" />
-		<button class="btn btn-outline btn-secondary" on:click={login}>Sign in</button>
+		<button class="btn btn-outline btn-primary" on:click={login}>Sign in</button>
 	</Form>
 </div>
 
