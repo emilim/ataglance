@@ -1,8 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap');
 @import 'carbon-components-svelte/css/g100.css';
+
+@media (data-theme: light) {
+    @import 'carbon-components-svelte/css/white.css';
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* By default, include the "light" color theme for syntax highlighting */
 
 p:empty:not(:focus)::before {
     content: attr(data-placeholder);

@@ -13,13 +13,14 @@
 	}
 </script>
 
-<div class="form">
+<div class="form text-accent-content">
 	<Form>
 		<TextInput
 			bind:value={username}
 			labelText="Username"
 			placeholder="Enter your username"
 			name="username"
+			class="text-pure bg-accent"
 		/>
 		<div class="space" />
 		<TextInput

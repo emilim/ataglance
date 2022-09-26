@@ -9,20 +9,46 @@
 	import { auth, userDoc } from '../../firebase';
 	import { goto } from '$app/navigation';
 	import { setDoc } from 'firebase/firestore/lite';
+	import swal from 'sweetalert';
 	export let errors;
 
 	async function signIn(event) {
+		/*
 		try {
+			const auth = getAuth();
 			let user = await signInWithEmailAndPassword(auth, event.detail.email, event.detail.password);
+			console.log(user);
 			await setDoc(userDoc(auth.currentUser.uid), {
 				username: user.user.displayName,
 				email: user.user.email
 			});
+			swal('Success', 'You have successfully logged in', 'success');
 			await goto('/admin');
 		} catch (error) {
+			swal('Error', error.message, 'error');
 			console.log('error signin in', error);
 		}
+		*/
+		const auth = getAuth();
+		signInWithEmailAndPassword(auth, event.detail.email, event.detail.password)
+			.then(async (userCredential) => {
+				// Signed in
+				const user = userCredential.user;
+				// ...
+				await setDoc(userDoc(auth.currentUser.uid), {
+					username: user.displayName,
+					email: user.email
+				});
+				swal('Success', 'You have successfully logged in', 'success');
+				await goto('/admin');
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				swal('Error', errorMessage, 'error');
+			});
 	}
+
 	function googleLogin() {
 		try {
 			const provider = new GoogleAuthProvider();

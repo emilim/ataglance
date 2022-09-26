@@ -24,6 +24,6 @@
 	on:sendNoteDetails={createNewNote}
 	title={''}
 	summary={''}
-	description={'<div class="container" style="height: 100%; border-radius: 10px; background-color: var(--back); border: 10px solid var(--back);"><flex style="height: 100%;" class="h"><flex-element color="rgb(173, 12, 240)" content="" flex=""><textarea id="message" placeholder="Enter content" style="background: rgb(173, 12, 240);"></textarea></flex-element></flex></div>'}
+	description={'<div class="container" style="height: 100%; border-radius: 10px; background-color: var(--back); border: 10px solid var(--back);"><flex style="height: 100%;" class="h"><flex-element color="rgb(173, 12, 240)" content="" flex=""><textarea id="message" placeholder="Enter content" style="background: rgb(173, 12, 240); text-align: center;"><span style="display: inline-block; vertical-align: middle; line-height: normal;">Ciao</span></textarea></flex-element></flex></div>'}
 	messages={[]}
 />

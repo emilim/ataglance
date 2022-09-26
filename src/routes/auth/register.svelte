@@ -1,19 +1,27 @@
 <script>
 	import SignUp from '../../lib/auth/sign_up_form.svelte';
-	import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+	import {
+		createUserWithEmailAndPassword,
+		updateProfile,
+		sendEmailVerification,
+		getAuth
+	} from 'firebase/auth';
 	import { goto } from '$app/navigation';
 	import { auth, userDoc } from '../../firebase';
 	import { setDoc } from 'firebase/firestore/lite';
+	import swal from 'sweetalert';
 
 	let errors;
 
 	async function signUp(event) {
+		/*
 		try {
 			let user = await createUserWithEmailAndPassword(
 				auth,
 				event.detail.email,
 				event.detail.password
 			);
+			await sendEmailVerification(user.user);
 			await updateProfile(user.user, { displayName: event.detail.username });
 			await setDoc(userDoc(auth.currentUser.uid), {
 				username: user.user.displayName,
@@ -22,7 +30,27 @@
 			await goto('/admin');
 		} catch (e) {
 			console.log('error from creating user', e);
-		}
+		}	
+		*/
+		const auth = getAuth();
+		createUserWithEmailAndPassword(auth, event.detail.email, event.detail.password)
+			.then(async (userCredential) => {
+				// Signed in
+				const user = userCredential.user;
+				// ...
+				await setDoc(userDoc(auth.currentUser.uid), {
+					username: user.displayName,
+					email: user.email
+				});
+				swal('Account created', 'Please check your email for a verification link', 'success');
+				await goto('/admin', { replaceState: true });
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				// ..
+				swal('Error', errorMessage, 'error');
+			});
 	}
 </script>
 
