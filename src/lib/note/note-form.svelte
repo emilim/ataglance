@@ -49,6 +49,7 @@
 				if (!this.hasChildNodes()) {
 					var content = document.createElement('textarea');
 					content.setAttribute('id', 'message');
+					content.style.textAlign = 'center';
 					content.setAttribute('placeholder', 'Enter content');
 					content.style.background = this.style.background;
 					this.appendChild(content);
