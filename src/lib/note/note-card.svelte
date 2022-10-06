@@ -31,7 +31,7 @@
 	});
 </script>
 
-<div class="card bg-secondary">
+<div class="card">
 	<h1 class="text-xl m-1 font-bold">{@html title}</h1>
 	<p class="text-xs mb-2 font-thin">{@html summary}</p>
 	<div class="description disabled" style="height: 25vh;">
@@ -56,7 +56,7 @@
 		min-width: 300px;
 		display: flex;
 		flex-direction: column;
-		box-shadow: 0 8px 7px #f1f2f2;
+		box-shadow: 0 8px 7px var(--back);
 		padding: 1em;
 		margin: 1em 2em;
 		transition: all 200ms ease-in;
@@ -102,44 +102,5 @@
 		background-color: rgb(229, 229, 229);
 		height: calc(100vh - 500px);
 		border-radius: 10px;
-	}
-	:global(flex-element) {
-		border-radius: 10px;
-	}
-	:global(flex) {
-		display: flex;
-		overflow: hidden;
-	}
-	:global(flex.h) {
-		flex-direction: row;
-	}
-
-	:global(flex.v) {
-		flex-direction: column;
-	}
-
-	:global(flex-item) {
-		/* display: flex; */
-		/* position: relative; */
-		/* overflow: hidden; */
-		overflow: auto;
-	}
-
-	:global(flex > flex-resizer) {
-		flex: 0 0 10px;
-		/* background: white; */
-		background-color: rgb(229, 229, 229);
-		background-repeat: no-repeat;
-		background-position: center;
-	}
-
-	:global(flex.h > flex-resizer) {
-		cursor: ew-resize;
-		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='black'/></svg>");
-	}
-
-	:global(flex.v > flex-resizer) {
-		cursor: ns-resize;
-		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='10'><path d='M0 2 h30 M0 5 h30 M0 8 h30' fill='none' stroke='black'/></svg>");
 	}
 </style>

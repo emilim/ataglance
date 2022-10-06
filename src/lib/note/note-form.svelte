@@ -49,8 +49,7 @@
 				if (!this.hasChildNodes()) {
 					var content = document.createElement('textarea');
 					content.setAttribute('id', 'message');
-					content.style.textAlign = 'center';
-					content.setAttribute('placeholder', 'Enter content');
+					content.setAttribute('placeholder', 'Enter content.');
 					content.style.background = this.style.background;
 					this.appendChild(content);
 				} else {
@@ -297,11 +296,25 @@
 	}
 	function CreateGroup() {
 		var newFlex = document.createElement('flex');
+		newFlex.style.flexDirection = 'column';
+		var text = document.createElement('p');
+
+		text.contentEditable = 'true';
+		//text.innerHTML = 'New Group';
+		text.setAttribute('data-placeholder', 'New group');
+		//position text at the top center of the group
+		text.style.top = '0';
+		text.style.textAlign = 'center';
+
 		newFlex.className = 'h';
 		newFlex.style.flexGrow = '1';
-		newFlex.style.border = '10px solid black';
+		newFlex.style.border = '10px solid var(--back)';
 		newFlex.style.borderRadius = '10px';
-		newFlex.appendChild(newItem.cloneNode(true));
+		newFlex.style.borderTop = '0';
+		var newEvTarget = ev.cloneNode(true);
+		newEvTarget.setAttribute('content', ev.cloneNode(true).children[0].value);
+		newFlex.appendChild(text);
+		newFlex.appendChild(newEvTarget);
 		ev.parentNode.replaceChild(newFlex, ev);
 	}
 
@@ -362,13 +375,29 @@
 		}
 		ev.remove();
 	}
-	function getRandomColor() {
+	/*function getRandomColor() {
 		var letters = '0123456789ABCDEF';
 		var color = '#';
 		for (var i = 0; i < 6; i++) {
 			color += letters[Math.floor(Math.random() * 16)];
 		}
 		return color;
+	}*/
+	function getRandomColor() {
+		var h = Math.floor(Math.random() * 360);
+		//s between 10 and 30 and l between 60 and 90
+		var s = Math.floor(Math.random() * 20) + 10;
+		var l = Math.floor(Math.random() * 30) + 60;
+		l /= 100;
+		const a = (s * Math.min(l, 1 - l)) / 100;
+		const f = (n) => {
+			const k = (n + h / 30) % 12;
+			const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+			return Math.round(255 * color)
+				.toString(16)
+				.padStart(2, '0'); // convert to Hex and prefix "0" if needed
+		};
+		return `#${f(0)}${f(8)}${f(4)}`;
 	}
 </script>
 
@@ -417,59 +446,3 @@
 	<ContextMenuDivider />
 	<ContextMenuOption indented kind="danger" labelText="Delete" on:click={Delete} />
 </ContextMenu>
-
-<style>
-	/*
-	:global(.container) {
-		position: relative;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-		overflow: auto;
-		border: 10px solid rgb(229, 229, 229);
-		background-color: rgb(229, 229, 229);
-		height: calc(100vh - 200px);
-		border-radius: 10px;
-	}*/
-	:global(flex-element) {
-		border-radius: 10px;
-		padding: 10px;
-	}
-	:global(flex) {
-		display: flex;
-		overflow: hidden;
-	}
-	:global(flex.h) {
-		flex-direction: row;
-	}
-
-	:global(flex.v) {
-		flex-direction: column;
-	}
-
-	:global(flex-item) {
-		/* display: flex; */
-		/* position: relative; */
-		/* overflow: hidden; */
-		overflow: auto;
-	}
-
-	:global(flex > flex-resizer) {
-		flex: 0 0 10px;
-		/* background: white; */
-		background-color: var(--back);
-		background-repeat: no-repeat;
-		background-position: center;
-	}
-
-	:global(flex.h > flex-resizer) {
-		cursor: ew-resize;
-		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='black'/></svg>");
-	}
-
-	:global(flex.v > flex-resizer) {
-		cursor: ns-resize;
-		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='10'><path d='M0 2 h30 M0 5 h30 M0 8 h30' fill='none' stroke='black'/></svg>");
-	}
-</style>
