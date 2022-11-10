@@ -16,7 +16,7 @@
 		});
 		title = document.getElementById('title').innerHTML;
 		summary = document.getElementById('summary').innerHTML;
-		description = document.getElementsByClassName('container')[0].outerHTML;
+		description = document.getElementById('description').outerHTML;
 		messages = Array.from(document.querySelectorAll('[id^="message"]')).map((message) => {
 			return {
 				content: message.value
@@ -363,7 +363,7 @@
 		var textColor = document.createElement('input');
 		backgroundColor.setAttribute('type', 'color');
 		textColor.setAttribute('type', 'color');
-		console.log(color);
+
 		backgroundColor.defaultValue = color;
 		textColor.defaultValue = color2;
 		//merge the two inputs into one
@@ -406,8 +406,41 @@
 		}
 		return color;
 	}*/
+	function hexToHue(hex) {
+		var r = parseInt(hex.substring(1, 3), 16) / 255;
+		var g = parseInt(hex.substring(3, 5), 16) / 255;
+		var b = parseInt(hex.substring(5, 7), 16) / 255;
+		var max = Math.max(r, g, b);
+		var min = Math.min(r, g, b);
+		var h,
+			s,
+			l = (max + min) / 2;
+
+		if (max == min) {
+			h = s = 0; // achromatic
+		} else {
+			var d = max - min;
+			s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+			switch (max) {
+				case r:
+					h = (g - b) / d + (g < b ? 6 : 0);
+					break;
+				case g:
+					h = (b - r) / d + 2;
+					break;
+				case b:
+					h = (r - g) / d + 4;
+					break;
+			}
+			h /= 6;
+		}
+
+		return h;
+	}
 	function getRandomColor() {
-		var h = Math.floor(Math.random() * 360);
+		console.log(color);
+		var h = hexToHue(color) * 360;
+		console.log(h);
 		//s between 10 and 30 and l between 60 and 90
 		var s = Math.floor(Math.random() * 20) + 10;
 		var l = Math.floor(Math.random() * 30) + 60;
@@ -422,6 +455,7 @@
 		};
 		return `#${f(0)}${f(8)}${f(4)}`;
 	}
+	let color = '#ff0000';
 </script>
 
 <div class="text-accent-content m-4">
@@ -442,7 +476,9 @@
 		{@html summary}
 	</p>
 </div>
-<div style="height: 100vh;">
+<p class="m-4 ml-6">Choose a base color: <input type="color" bind:value={color} /></p>
+
+<div style="height: 100vh; width:100%;">
 	{@html description}
 </div>
 <Form>
