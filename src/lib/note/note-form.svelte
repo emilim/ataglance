@@ -61,9 +61,13 @@
 				return ['color', 'flex', 'content'];
 			}
 		}
+
 		customElements.get('flex-element') || customElements.define('flex-element', FlexElement);
 
 		function manageResizeTouch(md, sizeProp, posProp) {
+			const html = document.querySelector('html');
+			html.style.overflow = 'hidden';
+
 			var r = document.elementFromPoint(md.touches[0].clientX, md.touches[0].clientY);
 
 			var prev = r.previousElementSibling;
@@ -78,11 +82,12 @@
 			var prevGrow = Number(prev.style.flexGrow);
 			var nextGrow = Number(next.style.flexGrow);
 			var sumGrow = prevGrow + nextGrow;
-			var lastPos = posProp == 'clientX' ? md.touches[0].clientX : md.touches[0].clientY;
 
+			var lastPos = posProp == 'pageX' ? md.touches[0].clientX : md.touches[0].clientY;
 			function onTouchMove(mm) {
-				var pos = posProp == 'clientX' ? md.touches[0].clientX : md.touches[0].clientY;
+				var pos = posProp == 'pageX' ? mm.touches[0].clientX : mm.touches[0].clientY;
 				var d = pos - lastPos;
+
 				prevSize += d;
 				nextSize -= d;
 				if (prevSize < 0) {
@@ -106,6 +111,13 @@
 			}
 
 			function onTouchUp(mu) {
+				const html = document.querySelector('html');
+				html.style.overflow = 'auto';
+				if (posProp === 'pageX') {
+					r.style.cursor = 'ew-resize';
+				} else {
+					r.style.cursor = 'ns-resize';
+				}
 				window.removeEventListener('touchmove', onTouchMove);
 				window.removeEventListener('touchend', onTouchUp);
 			}
@@ -114,6 +126,8 @@
 		}
 
 		function manageResize(md, sizeProp, posProp) {
+			const html = document.querySelector('html');
+			html.style.overflow = 'hidden';
 			var r = md.target;
 
 			var prev = r.previousElementSibling;
@@ -161,6 +175,7 @@
 			function onMouseUp(mu) {
 				// Change cursor to signal a state's change: stop resizing.
 				const html = document.querySelector('html');
+				html.style.overflow = 'auto';
 				html.style.cursor = 'default';
 
 				if (posProp === 'pageX') {
@@ -180,6 +195,7 @@
 				const html = document.querySelector('html');
 
 				var target = document.elementFromPoint(md.touches[0].clientX, md.touches[0].clientY);
+
 				// @ts-ignore
 				if (target.nodeType !== 1 || target.tagName !== 'FLEX-RESIZER') {
 					return;
@@ -191,8 +207,14 @@
 				if (h && v) {
 					return;
 				} else if (h) {
+					// @ts-ignore
+					target.style.cursor = 'col-resize';
+					html.style.cursor = 'col-resize'; // avoid cursor's flickering
 					manageResizeTouch(md, 'offsetWidth', 'pageX');
 				} else if (v) {
+					// @ts-ignore
+					target.style.cursor = 'row-resize';
+					html.style.cursor = 'row-resize'; // avoid cursor's flickering
 					manageResizeTouch(md, 'offsetHeight', 'pageY');
 				}
 			});
@@ -201,6 +223,7 @@
 				const html = document.querySelector('html');
 
 				var target = md.target;
+
 				// @ts-ignore
 				if (target.nodeType !== 1 || target.tagName !== 'FLEX-RESIZER') {
 					return;
