@@ -72,6 +72,13 @@ flex>flex-resizer {
     background-position: center;
 }
 
+@media (pointer:none),
+(pointer:coarse) {
+    flex>flex-resizer {
+        flex: 0 0 15px;
+    }
+}
+
 flex.h>flex-resizer {
     cursor: ew-resize;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='black'/></svg>");
